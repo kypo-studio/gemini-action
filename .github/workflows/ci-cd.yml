@@ -57,13 +57,13 @@ jobs:
       - name: Run unit tests
         run: npm run test:unit
 
-      - name: Upload coverage reports
-        uses: codecov/codecov-action@v4
+      - name: Upload coverage artifact
+        uses: actions/upload-artifact@v4
         if: always()
         with:
-          files: ./coverage/coverage-final.json
-          flags: unit
-          name: unit-tests
+          name: coverage-unit
+          path: coverage/
+          retention-days: 7
 
   test-e2e:
     name: E2E Tests
@@ -85,13 +85,13 @@ jobs:
       - name: Run E2E tests
         run: npm run test:e2e
 
-      - name: Upload coverage reports
-        uses: codecov/codecov-action@v4
+      - name: Upload coverage artifact
+        uses: actions/upload-artifact@v4
         if: always()
         with:
-          files: ./coverage/coverage-final.json
-          flags: e2e
-          name: e2e-tests
+          name: coverage-e2e
+          path: coverage/
+          retention-days: 7
 
   # ================================================================
   # STAGE 3: BUILD & PUSH DOCKER (MULTI-ARCH)
@@ -212,3 +212,4 @@ jobs:
             ${{ github.event.head_commit.message }}
           draft: false
           prerelease: false
+
