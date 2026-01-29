@@ -54,16 +54,17 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Run unit tests
+      - name: Run unit tests with coverage
         run: npm run test:unit
 
       - name: Upload coverage artifact
         uses: actions/upload-artifact@v4
-        if: always()
+        if: success()
         with:
           name: coverage-unit
-          path: coverage/
+          path: coverage/unit/
           retention-days: 7
+          if-no-files-found: warn
 
   test-e2e:
     name: E2E Tests
@@ -82,16 +83,17 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Run E2E tests
+      - name: Run E2E tests with coverage
         run: npm run test:e2e
 
       - name: Upload coverage artifact
         uses: actions/upload-artifact@v4
-        if: always()
+        if: success()
         with:
           name: coverage-e2e
-          path: coverage/
+          path: coverage/e2e/
           retention-days: 7
+          if-no-files-found: warn
 
   # ================================================================
   # STAGE 3: BUILD & PUSH DOCKER (MULTI-ARCH)
